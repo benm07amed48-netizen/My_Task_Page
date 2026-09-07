@@ -15,12 +15,12 @@ instr={
         "done":tool.l_done
         },
     "e":{
-        "info":"",
-        "stat":""
+        "info":tool.e_info,
+        "stat":tool.e_stat
         },
-    "a":"",
-    "d":"",
-    "i":""
+    "a":tool.a_add,
+    "d":tool.d_del,
+    "i":tool.info
 }
 
 if len (sys.argv)>1:
@@ -32,9 +32,9 @@ if len(command)>3:
 else:
     if command[0].lower() in instr:
         if len(command)==2:
-            if command[1] in instr[command[0]]:
-                instr[command[0]][command[1]]()
-            else :
+            try: 
+                if command[1] in instr[command[0]]:instr[command[0]][command[1]]()
+            except TypeError:
                 instr[command[0]](command[1])
         elif command[1] in instr[command[0]]:
             instr[command[0]][command[1]](command[2])
