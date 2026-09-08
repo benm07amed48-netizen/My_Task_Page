@@ -69,7 +69,7 @@ def save_taks(a):
 
 
 def id_check(id):
-   if id.lower().strip().strip("\#").strip() in load_tasks() : return False
+   if id.lower().strip().strip("#").strip() in load_tasks() : return False
    else : return True
 
 
@@ -99,13 +99,13 @@ def l_done():
 
 
 def info(id):
-    if id_check():print("wrong id ... canceling .");return
+    if id_check(id):print("wrong id ... canceling .");return
     list=load_tasks()
     print(f"-----| Task: \n[#{id}] [{list[id][0]}] [{list[id][1]}] {list[id][2]}\n           └─ Created: {list[id][3]} | Deadline: {list[id][4]} | Est.t: {list[id][5]} | {"Updated" if list[id][0] !="Done" else "Finished"}: {list[id][6]}\n")
 
 
 def d_del(id):
-    if id_check():print("wrong id ... canceling .");return
+    if id_check(id):print("wrong id ... canceling .");return
     list=load_tasks()
     print(f"-----| The Task going to be deleted: \n[#{id}] [{list[id][0]}] [{list[id][1]}] {list[id][2]}\n           └─ Created: {list[id][3]} | Deadline: {list[id][4]} | Est.t: {list[id][5]} | {"Updated" if list[id][0] !="Done" else "Finished"}: {list[id][6]}\n")
     ans=input("type Yes<-- [Y/N] -->No:\n\\").strip().lower()[0]
@@ -116,7 +116,7 @@ def d_del(id):
 
 
 def e_stat(id):
-    if id_check():print("wrong id ... canceling .");return
+    if id_check(id):print("wrong id ... canceling .");return
     list=load_tasks()
     print(f"-----| The Task going to set as '{"Done" if list[id][0]=="Todo" else "Todo"}': \n[#{id}] [{list[id][0]}] [{list[id][1]}] {list[id][2]}\n           └─ Created: {list[id][3]} | Deadline: {list[id][4]} | Est.t: {list[id][5]} | {"Updated" if list[id][0] !="Done" else "Finished"}: {list[id][6]}\n")
     ans=input("type Yes<-- [Y/N] -->No:\n\\").strip().lower()[0]
@@ -146,7 +146,7 @@ def parsing(txt):
 
 
 def e_info(id):
-    if id_check():print("wrong id ... canceling .");return
+    if id_check(id):print("wrong id ... canceling .");return
     list=load_tasks()
     print(f"-----| The Task going to be edited : \n[#{id}] [{list[id][0]}] [{list[id][1]}] {list[id][2]}\n           └─ Created: {list[id][3]} | Deadline: {list[id][4]} | Est.t: {list[id][5]} | {"Updated" if list[id][0] !="Done" else "Finished"}: {list[id][6]}\n")   
     ans=input(speech2)
@@ -167,8 +167,8 @@ def id_create(*key):
     elif key[0]=="LOW": one="x"
     else : one="z"
     two=key[1][1]+key[1][-1]
-    three=key[2].strip()[0].lower()+key[2][key[2].strip().find(" ")+1].lower()
-    four=datetime.now().microsecond[-3:]
+    three=key[2].strip()[0].lower()+key[2][key[2].strip().find(" ")-1].lower()
+    four=str(datetime.now().microsecond)[-3:]
     return one+two+three+four
 
 
@@ -190,17 +190,18 @@ def a_add(txt):
     elements["est"]="0m" if ans.isspace() or not ans else ans
 
     elements["stat"]="Todo"
-    elements["create"],elements["update"]=date.today().strftime("%m/%d")
+    elements["create"]=elements["update"]=date.today().strftime("%m/%d")
     elements["id"]=id_create(elements["priority"],elements["create"],elements["desc"])
 
-    list[elements["id"]][0]=elements["stat"]
-    list[elements["id"]][1]=elements["priority"]
-    list[elements["id"]][2]=elements["desc"]
-    list[elements["id"]][3]=elements["create"]
-    list[elements["id"]][4]=elements["deadline"]
-    list[elements["id"]][5]=elements["est"]
-    list[elements["id"]][6]=elements["update"]
+    list[elements["id"]] = [
+    elements["stat"]
+    ,elements["priority"]
+    ,elements["desc"]
+    ,elements["create"]
+    ,elements["deadline"]
+    ,elements["est"]
+    ,elements["update"]]
     print("... saving in progress")
-    print(save_taks())
+    print(save_taks(list))
     return
     

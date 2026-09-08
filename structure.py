@@ -35,9 +35,9 @@ else:
             try: 
                 if command[1] in instr[command[0]]:instr[command[0]][command[1]]()
             except TypeError:
-                instr[command[0]](command[1])
+                instr[command[0]](command[1].lower().strip("#"))
         elif command[1] in instr[command[0]]:
-            instr[command[0]][command[1]](command[2])
+            instr[command[0]][command[1]](command[2].lower().strip("#"))
         else:
             print("You didn't inout a valid command 'the second is wrong' ")
     else: 
