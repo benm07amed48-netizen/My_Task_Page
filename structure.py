@@ -27,8 +27,8 @@ if len (sys.argv)>1:
     command=sys.argv[1:]
 else:
     command=input(":_ ").strip().strip("_").strip(".").split()
-if len(command)>3:
-    print("you input more than 3 inputs 'only 3 or less required'")
+if len(command)>3 or len(command)==1:
+    print("invalid arguments number (2 or 3 command required)")
 else:
     if command[0].lower() in instr:
         if len(command)==2:

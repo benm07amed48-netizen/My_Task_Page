@@ -38,6 +38,7 @@ Choice: """
 def new_user():
     try:
         with open("tasks.json","x") as f:
+            f.write("{}")
             print(speech)
     except FileExistsError:
         pass
@@ -62,7 +63,7 @@ def load_tasks():
         return json.load(l)
 
     
-def save_taks(a):
+def save_tasks(a):
     with open("tasks.json","w") as l:
         json.dump(a,l,indent=4,sort_keys=True)     
     return "saving succesfull"
@@ -112,7 +113,7 @@ def d_del(id):
     if ans and ans[0] == "y":
         list.pop(id)
         print("The task has been deleted")  
-        print(save_taks(list))
+        print(save_tasks(list))
 
 
 def e_stat(id):
@@ -124,7 +125,8 @@ def e_stat(id):
         list[id][0]= "Done" if list[id][0]=="Todo" else "Todo"
         list[id][6]=date.today().strftime("%m/%d")
         print(f"The task is being set to '{list[id][0]}'")
-        print(save_taks(list))
+        print(save_tasks(list))
+
 
 def parsing(txt):
     try:
@@ -136,7 +138,11 @@ def parsing(txt):
     if len(rslt)!= 2:
         print("you didn't input the new value\n... editing canceled.try again")
         return False
-    rslt[0]=int(rslt[0].strip().strip('"'))
+    rslt[0]=rslt[0].strip().strip('"')
+    if not rslt[0].isdigit():
+        print("invalid field selection")
+        return
+    rslt[0]=int(rslt[0])
     rslt[1]=rslt[1].strip('"').capitalize()+(" ." if rslt[0]==2 else "")
     if rslt[0]==1 :rslt[1]=rslt[1].upper()
     if rslt[0] not in range(1,7):
@@ -155,7 +161,7 @@ def e_info(id):
         list[id][ans[0]]= ans[1]
         list[id][6]=date.today().strftime("%m/%d")
         print("... editing in progress ")
-        print(save_taks(list))
+        print(save_tasks(list))
     else:return
 
 
@@ -167,7 +173,7 @@ def id_create(*key):
     elif key[0]=="LOW": one="x"
     else : one="z"
     two=key[1][1]+key[1][-1]
-    three=key[2].strip()[0].lower()+key[2][key[2].strip().find(" ")-1].lower()
+    three=key[2].strip()[0].lower()+key[2][key[2].strip().find(" ")-1].lower() if len(key[2])>1 else"m"
     four=str(datetime.now().microsecond)[-3:]
     return one+two+three+four
 
@@ -202,6 +208,6 @@ def a_add(txt):
     ,elements["est"]
     ,elements["update"]]
     print("... saving in progress")
-    print(save_taks(list))
+    print(save_tasks(list))
     return
     
