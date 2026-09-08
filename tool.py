@@ -49,7 +49,7 @@ def logs():
 
 
 def instruction(maxdel=timedelta(minutes=1.5)):
-    with open("log.txt","a+") as log:
+    with open("log.txt","+a") as log:
         log.seek(log.tell()-26)
         last=datetime.strptime(log.read(),"%Y-%m-%d %H:%M:%S.%f")
     diff = datetime.now() - last
@@ -109,7 +109,7 @@ def d_del(id):
     list=load_tasks()
     print(f"-----| The Task going to be deleted: \n[#{id}] [{list[id][0]}] [{list[id][1]}] {list[id][2]}\n           └─ Created: {list[id][3]} | Deadline: {list[id][4]} | Est.t: {list[id][5]} | {"Updated" if list[id][0] !="Done" else "Finished"}: {list[id][6]}\n")
     ans=input("type Yes<-- [Y/N] -->No:\n\\").strip().lower()[0]
-    if ans=="y":
+    if ans and ans[0] == "y":
         list.pop(id)
         print("The task has been deleted")  
         print(save_taks(list))
@@ -120,7 +120,7 @@ def e_stat(id):
     list=load_tasks()
     print(f"-----| The Task going to set as '{"Done" if list[id][0]=="Todo" else "Todo"}': \n[#{id}] [{list[id][0]}] [{list[id][1]}] {list[id][2]}\n           └─ Created: {list[id][3]} | Deadline: {list[id][4]} | Est.t: {list[id][5]} | {"Updated" if list[id][0] !="Done" else "Finished"}: {list[id][6]}\n")
     ans=input("type Yes<-- [Y/N] -->No:\n\\").strip().lower()[0]
-    if ans=="y":
+    if ans and ans[0] == "y":
         list[id][0]= "Done" if list[id][0]=="Todo" else "Todo"
         list[id][6]=date.today().strftime("%m/%d")
         print(f"The task is being set to '{list[id][0]}'")
@@ -131,7 +131,7 @@ def parsing(txt):
         rslt=txt.index(" ")
     except ValueError:
         txt=txt.replace('"'," ",1)
-    if speech.startswith("0") : print("... canceling\nCanceled");return False
+    if txt.startswith("0") : print("... canceling\nCanceled");return False
     rslt=txt.strip(".").strip().split(maxsplit=1)
     if len(rslt)!= 2:
         print("you didn't input the new value\n... editing canceled.try again")

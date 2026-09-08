@@ -39,6 +39,6 @@ else:
         elif command[1] in instr[command[0]]:
             instr[command[0]][command[1]](command[2].lower().strip("#"))
         else:
-            print("You didn't inout a valid command 'the second is wrong' ")
+            print("You didn't input a valid command 'the second is wrong' ")
     else: 
-        print("You didn't inout a valid command 'the first is wrong' ")
+        print("You didn't input a valid command 'the first is wrong' ")
